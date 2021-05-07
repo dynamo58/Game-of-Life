@@ -40,12 +40,25 @@ namespace gameOfLife
             changeEnvBtn.Click += new EventHandler(updateEnvironment);
             sizeTracker.ValueChanged += new EventHandler(updateSizeTrackerLabel);
             panel1.Click += new EventHandler(changeCellStateHandler);
+
+            sendConfig();
+            getConfig();
         }
 
         private void sendConfig()
         {
-            string parsedJSON = JsonConvert.SerializeObject(vars);
-            File.WriteAllText(@"config.json", parsedJSON);
+            string currentConfig = JsonConvert.SerializeObject(vars);
+            File.WriteAllText(@"config.json", currentConfig);
+
+            Console.WriteLine("Sent current config to config file.");
+        }
+
+        private void getConfig()
+        {
+            string savedConfig = File.ReadAllText(@"config.json");
+            vars = JsonConvert.DeserializeObject<Vars>(savedConfig);
+
+            Console.WriteLine("Config fetched from config file.");
         }
 
         int getNeighborCount(int x, int y)
@@ -159,17 +172,11 @@ namespace gameOfLife
             }
 
 
-            // fetch survive :: be born conditions
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //
+            char[] surv = customRulesSTextBox.Text.ToCharArray();
+            char[] born = customRulesBTextBox.Text.ToCharArray();
+
+            vars.surviveConds = Array.ConvertAll(surv, num => (int)Char.GetNumericValue(num));
+            vars.bornConds = Array.ConvertAll(born, num => (int)Char.GetNumericValue(num));
 
             panel1.Refresh();
         }
@@ -239,3 +246,11 @@ namespace gameOfLife
         }
     }
 }
+
+
+//  shortterm TODOs:
+//
+//  dynamically change life-deciding based on the survConds and bornConds arrays
+//  Dummy-proof the textboxes
+//  Send data to config files after update
+//  After load make config file if it isn't found and if it is, get data from it
