@@ -1,13 +1,7 @@
 ﻿using System;
-//using System.Configuration;
-//using System.Collections.Generic;
-//using System.ComponentModel;
-//using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
-//using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Forms;
 using MaterialSkin;
@@ -15,6 +9,17 @@ using MaterialSkin.Controls;
 using Newtonsoft.Json;
 using System.IO;
 using AnimatedGif;
+
+
+//
+//           Autor:  Marek Smolík
+//           Popis:  implementace Hry života (Game of Life)
+//           Datum:  9.5.2021
+//  Použité balíky:  MateralSkin        (https://www.nuget.org/packages/MaterialSkin.2/2.1.3)
+//                   Newtonsoft.Json    (https://www.nuget.org/packages/Newtonsoft.Json/)
+//                   AnimatedGIF        (https://www.nuget.org/packages/AnimatedGif/)
+//
+
 
 namespace gameOfLife
 {
@@ -130,7 +135,11 @@ namespace gameOfLife
             vars.cellState = newCellState;
 
             panel1.Refresh();
-            savePanelAsPNG();
+
+            if (recording)
+            {
+                savePanelAsPNG();
+            }
         }
 
         // změní stav buňky, když je na buňku kliknuto
@@ -260,9 +269,9 @@ namespace gameOfLife
         private void autoGenerationButton_Click(object sender, EventArgs e)
         {
             autoGenerationTimer.Enabled = !autoGenerationTimer.Enabled;
-            autoGenerationButton.Text = (autoGenerationButton.Text == "Auto generation [OFF]") ?
-                autoGenerationButton.Text = "Auto generation [ON]" :
-                autoGenerationButton.Text = "Auto generation [OFF]";
+            autoGenerationButton.Text = (autoGenerationButton.Text == "Automatická generace [OFF]") ?
+                autoGenerationButton.Text = "Automatická generace [ON]" :
+                autoGenerationButton.Text = "Automatická generace [OFF]";
         }
 
         // náhodně oživotní / zabije buňky
@@ -288,16 +297,18 @@ namespace gameOfLife
         }
 
 
-        // uloží konfiguraci do config-u
+        // uloží konfiguraci do configu
         private void main_FormClosing(object sender, FormClosingEventArgs e)
         {
             sendConfig();
-            if (!recording)
+            if (recording)
             {
-                compileTempImages();
+                deleteTempFiles();
             }
         }
 
+
+        // smaže všechny buňky
         private void killCellsButton_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < vars.cellNum; i++)
@@ -311,6 +322,8 @@ namespace gameOfLife
             panel1.Refresh();
         }
 
+
+        // uloží panel jako *.png temp. soubor
         private void savePanelAsPNG()
         {
             Thread thread = new Thread(t =>
@@ -334,12 +347,13 @@ namespace gameOfLife
             thread.Start();
         }
 
+        // vytvoří z temp obrázku *.gif (a následně je smaže)
         private void compileTempImages()
         {
             String imageFilePath = Application.StartupPath + "\\img\\";
 
             var img = Image.FromFile("img\\temp1.png");
-            using (var gif = AnimatedGif.AnimatedGif.Create(imageFilePath + "gameOfLife.gif", 100))
+            using (var gif = AnimatedGif.AnimatedGif.Create(imageFilePath + "gameOfLife" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".gif", 100))
             {
                 for (int i = 1; i <= tempImgs; i++)
                 {
@@ -347,14 +361,31 @@ namespace gameOfLife
                     gif.AddFrame(img, delay: -1, quality: GifQuality.Bit8);
                 }
             }
-            
+
             tempImgs = 0;
+            deleteTempFiles();
         }
 
+
+        // smaže temp. obrázky
+        private void deleteTempFiles()
+        {
+            String imageFilePath = Application.StartupPath + "\\img\\";
+
+            string[] tempImages = Directory.GetFiles(imageFilePath, "temp*");
+
+            foreach (string image in tempImages)
+            {
+                File.Delete(image);
+            }
+        }
+
+
+        // ---
         private void recordingButton_Click(object sender, EventArgs e)
         {
             recording = !recording;
-            recordingButton.Text = recording ? "Recording [ON]" : "Recording [OFF]"; 
+            recordingButton.Text = recording ? "Nahrávání [ON]" : "Nahrávání [OFF]"; 
 
             if (recording)
             {
