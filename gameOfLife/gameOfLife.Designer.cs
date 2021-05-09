@@ -47,6 +47,8 @@ namespace gameOfLife
             this.autoGenerationTimer = new System.Windows.Forms.Timer(this.components);
             this.randomizeCellsButton = new MaterialSkin.Controls.MaterialButton();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.killCellsButton = new MaterialSkin.Controls.MaterialButton();
+            this.recordingButton = new MaterialSkin.Controls.MaterialButton();
             ((System.ComponentModel.ISupportInitialize)(this.sizeTracker)).BeginInit();
             this.envConfBox.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -69,7 +71,7 @@ namespace gameOfLife
             this.fastModeButton.AutoSize = true;
             this.fastModeButton.BackColor = System.Drawing.Color.Transparent;
             this.fastModeButton.Depth = 0;
-            this.fastModeButton.Location = new System.Drawing.Point(140, 144);
+            this.fastModeButton.Location = new System.Drawing.Point(140, 192);
             this.fastModeButton.Margin = new System.Windows.Forms.Padding(0);
             this.fastModeButton.MouseLocation = new System.Drawing.Point(-1, -1);
             this.fastModeButton.MouseState = MaterialSkin.MouseState.HOVER;
@@ -230,7 +232,7 @@ namespace gameOfLife
             this.newGenButton.DrawShadows = true;
             this.newGenButton.HighEmphasis = true;
             this.newGenButton.Icon = null;
-            this.newGenButton.Location = new System.Drawing.Point(122, 54);
+            this.newGenButton.Location = new System.Drawing.Point(122, 102);
             this.newGenButton.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.newGenButton.MouseState = MaterialSkin.MouseState.HOVER;
             this.newGenButton.Name = "newGenButton";
@@ -249,7 +251,7 @@ namespace gameOfLife
             this.autoGenerationButton.DrawShadows = true;
             this.autoGenerationButton.HighEmphasis = true;
             this.autoGenerationButton.Icon = null;
-            this.autoGenerationButton.Location = new System.Drawing.Point(77, 102);
+            this.autoGenerationButton.Location = new System.Drawing.Point(77, 150);
             this.autoGenerationButton.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.autoGenerationButton.MouseState = MaterialSkin.MouseState.HOVER;
             this.autoGenerationButton.Name = "autoGenerationButton";
@@ -289,14 +291,53 @@ namespace gameOfLife
             // 
             this.flowLayoutPanel1.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.flowLayoutPanel1.Controls.Add(this.randomizeCellsButton);
+            this.flowLayoutPanel1.Controls.Add(this.killCellsButton);
             this.flowLayoutPanel1.Controls.Add(this.newGenButton);
             this.flowLayoutPanel1.Controls.Add(this.autoGenerationButton);
             this.flowLayoutPanel1.Controls.Add(this.fastModeButton);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(818, 334);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(273, 205);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(273, 249);
             this.flowLayoutPanel1.TabIndex = 12;
+            // 
+            // killCellsButton
+            // 
+            this.killCellsButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.killCellsButton.Depth = 0;
+            this.killCellsButton.DrawShadows = true;
+            this.killCellsButton.HighEmphasis = true;
+            this.killCellsButton.Icon = null;
+            this.killCellsButton.Location = new System.Drawing.Point(142, 54);
+            this.killCellsButton.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.killCellsButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.killCellsButton.Name = "killCellsButton";
+            this.killCellsButton.Size = new System.Drawing.Size(127, 36);
+            this.killCellsButton.TabIndex = 13;
+            this.killCellsButton.Text = "Kill all cells";
+            this.killCellsButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.killCellsButton.UseAccentColor = false;
+            this.killCellsButton.UseVisualStyleBackColor = true;
+            this.killCellsButton.Click += new System.EventHandler(this.killCellsButton_Click);
+            // 
+            // recordingButton
+            // 
+            this.recordingButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.recordingButton.Depth = 0;
+            this.recordingButton.DrawShadows = true;
+            this.recordingButton.HighEmphasis = true;
+            this.recordingButton.Icon = null;
+            this.recordingButton.Location = new System.Drawing.Point(521, 547);
+            this.recordingButton.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.recordingButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.recordingButton.Name = "recordingButton";
+            this.recordingButton.Size = new System.Drawing.Size(58, 36);
+            this.recordingButton.TabIndex = 13;
+            this.recordingButton.Text = "Recording [OFF]";
+            this.recordingButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.recordingButton.UseAccentColor = false;
+            this.recordingButton.UseVisualStyleBackColor = true;
+            this.recordingButton.Click += new System.EventHandler(this.recordingButton_Click);
             // 
             // main
             // 
@@ -304,6 +345,7 @@ namespace gameOfLife
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.ClientSize = new System.Drawing.Size(1100, 649);
+            this.Controls.Add(this.recordingButton);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.envConfBox);
             this.Controls.Add(this.panel1);
@@ -312,12 +354,14 @@ namespace gameOfLife
             this.MinimumSize = new System.Drawing.Size(1000, 649);
             this.Name = "main";
             this.Text = "Game of Life";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.main_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.sizeTracker)).EndInit();
             this.envConfBox.ResumeLayout(false);
             this.envConfBox.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -340,6 +384,8 @@ namespace gameOfLife
         private MaterialSkin.Controls.MaterialTextBox customRulesSTextBox;
         private MaterialSkin.Controls.MaterialLabel materialLabel2;
         private MaterialSkin.Controls.MaterialTextBox customRulesBTextBox;
+        private MaterialSkin.Controls.MaterialButton killCellsButton;
+        private MaterialSkin.Controls.MaterialButton recordingButton;
     }
 }
 

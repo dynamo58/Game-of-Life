@@ -20,7 +20,6 @@ C:\Users\smolik\Documents\temporary_code\rocnikovka\game-of-life_final\gameOfLif
 C:\Users\smolik\Documents\temporary_code\rocnikovka\game-of-life_final\gameOfLife\bin\Debug\Newtonsoft.Json.dll
 C:\Users\smolik\Documents\temporary_code\rocnikovka\game-of-life_final\gameOfLife\bin\Debug\Newtonsoft.Json.xml
 C:\Users\smolik\Documents\temporary_code\rocnikovka\game-of-life_final\gameOfLife\obj\Debug\gameOfLife.main.resources
-G:\git\game-of-life_final\gameOfLife\bin\Debug\gameOfLife.exe.config
 G:\git\game-of-life_final\gameOfLife\bin\Debug\gameOfLife.exe
 G:\git\game-of-life_final\gameOfLife\bin\Debug\gameOfLife.pdb
 G:\git\game-of-life_final\gameOfLife\bin\Debug\MaterialSkin.dll
@@ -34,7 +33,6 @@ G:\git\game-of-life_final\gameOfLife\bin\Debug\System.Configuration.Configuratio
 G:\git\game-of-life_final\gameOfLife\bin\Debug\System.Security.AccessControl.xml
 G:\git\game-of-life_final\gameOfLife\bin\Debug\System.Security.Permissions.xml
 G:\git\game-of-life_final\gameOfLife\bin\Debug\System.Security.Principal.Windows.xml
-G:\git\game-of-life_final\gameOfLife\obj\Debug\gameOfLife.csprojAssemblyReference.cache
 G:\git\game-of-life_final\gameOfLife\obj\Debug\gameOfLife.main.resources
 G:\git\game-of-life_final\gameOfLife\obj\Debug\gameOfLife.Properties.Resources.resources
 G:\git\game-of-life_final\gameOfLife\obj\Debug\gameOfLife.csproj.GenerateResource.cache
@@ -42,3 +40,6 @@ G:\git\game-of-life_final\gameOfLife\obj\Debug\gameOfLife.csproj.CoreCompileInpu
 G:\git\game-of-life_final\gameOfLife\obj\Debug\gameOfLife.csproj.CopyComplete
 G:\git\game-of-life_final\gameOfLife\obj\Debug\gameOfLife.exe
 G:\git\game-of-life_final\gameOfLife\obj\Debug\gameOfLife.pdb
+G:\git\game-of-life_final\gameOfLife\obj\Debug\gameOfLife.csprojAssemblyReference.cache
+G:\git\game-of-life_final\gameOfLife\bin\Debug\AnimatedGif.dll
+G:\git\game-of-life_final\gameOfLife\bin\Debug\System.Drawing.Common.dll
