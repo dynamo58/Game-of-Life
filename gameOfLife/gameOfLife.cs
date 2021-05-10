@@ -25,6 +25,8 @@ namespace gameOfLife
 {
     public partial class main : MaterialForm
     {
+        readonly string configFilePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\gameOfLife";
+        readonly string tempFilePath = Path.GetTempPath() + "\\gameOfLife_tempfiles";
         bool recording = false;
         int tempImgs = 0;
 
@@ -64,7 +66,7 @@ namespace gameOfLife
         private void sendConfig()
         {
             string currentConfig = JsonConvert.SerializeObject(vars);
-            File.WriteAllText(@"config.json", currentConfig);
+            File.WriteAllText(configFilePath + "\\config.json", currentConfig);
 
             Console.WriteLine("Sent current config to config file.");
         }
@@ -72,14 +74,13 @@ namespace gameOfLife
         // získá config z config souboru
         private void getConfig()
         {
-            string configFilePath = Application.StartupPath + "\\config.json";
+            if (!File.Exists(configFilePath))
+                Directory.CreateDirectory(configFilePath);
 
-            if (File.Exists(configFilePath))
+            if (File.Exists(configFilePath + "\\config.json"))
             {
-                string savedConfig = File.ReadAllText(@"config.json");
+                string savedConfig = File.ReadAllText(configFilePath + "\\config.json");
                 vars = JsonConvert.DeserializeObject<Vars>(savedConfig);
-
-                Console.WriteLine("Config fetched from config file.");
             }
         }
 
@@ -329,11 +330,10 @@ namespace gameOfLife
             Thread thread = new Thread(t =>
             {
                 tempImgs++;
-                String imageFilePath = Application.StartupPath + "\\img\\";
 
-                if (!Directory.Exists(imageFilePath))
+                if (!Directory.Exists(tempFilePath))
                 {
-                    Directory.CreateDirectory(imageFilePath);
+                    Directory.CreateDirectory(tempFilePath);
                 }
 
                 int width = panel1.Size.Width;
@@ -341,7 +341,7 @@ namespace gameOfLife
 
                 Bitmap bm = new Bitmap(width, height);
                 panel1.DrawToBitmap(bm, new Rectangle(0, 0, width, height));
-                bm.Save(imageFilePath + "temp" + tempImgs.ToString() + ".png", ImageFormat.Png);
+                bm.Save(tempFilePath + "\\temp" + tempImgs.ToString() + ".png", ImageFormat.Png);
             })
             { IsBackground = true };
             thread.Start();
@@ -350,14 +350,12 @@ namespace gameOfLife
         // vytvoří z temp obrázku *.gif (a následně je smaže)
         private void compileTempImages()
         {
-            String imageFilePath = Application.StartupPath + "\\img\\";
-
-            var img = Image.FromFile("img\\temp1.png");
-            using (var gif = AnimatedGif.AnimatedGif.Create(imageFilePath + "gameOfLife" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".gif", 100))
+            var img = Image.FromFile(tempFilePath +"\\temp1.png");
+            using (var gif = AnimatedGif.AnimatedGif.Create(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + "\\gameOfLife" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".gif", 100))
             {
                 for (int i = 1; i <= tempImgs; i++)
                 {
-                    img = Image.FromFile("img\\temp" + i.ToString() + ".png");
+                    img = Image.FromFile(tempFilePath + "\\temp" + i.ToString() + ".png");
                     gif.AddFrame(img, delay: -1, quality: GifQuality.Bit8);
                 }
             }
@@ -370,9 +368,7 @@ namespace gameOfLife
         // smaže temp. obrázky
         private void deleteTempFiles()
         {
-            String imageFilePath = Application.StartupPath + "\\img\\";
-
-            string[] tempImages = Directory.GetFiles(imageFilePath, "temp*");
+            string[] tempImages = Directory.GetFiles(tempFilePath + "\\", "temp*");
 
             foreach (string image in tempImages)
             {
